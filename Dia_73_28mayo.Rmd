@@ -1,3 +1,14 @@
+---
+title: "Dia_73_28mayo"
+author: "Daniel Felipe Villa Rengifo"
+date: "1/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ```{r, eval=FALSE, include=TRUE}
 "Protocolo:
 
@@ -190,3 +201,10 @@ ultimopago(mefia)
 # Exportamos el resultado:
 write.table(ultimopago(mefia), file = "CuotaFinal.txt", row.names = F)
 ```
+
+```{r, eval=FALSE, include=FALSE}
+library(knitr)
+purl("Dia_73_28mayo.Rmd", "main.r")
+```
+
+

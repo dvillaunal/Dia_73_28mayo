@@ -1,48 +1,37 @@
-```{r, eval=FALSE, include=TRUE}
-"Protocolo:
+## ---- eval=FALSE, include=TRUE-----------------------------------------------
+## "Protocolo:
+## 
+##  1. Daniel Felipe Villa Rengifo
+## 
+##  2. Lenguaje: R
+## 
+##  3. Tema: Manejo de Fechas en R (Lubridate)
+## 
+##  4. Fuentes:
+##     https://www.rdocumentation.org/packages/datasets/versions/3.6.2"
+## 
 
- 1. Daniel Felipe Villa Rengifo
 
- 2. Lenguaje: R
-
- 3. Tema: Manejo de Fechas en R (Lubridate)
-
- 4. Fuentes:
-    https://www.rdocumentation.org/packages/datasets/versions/3.6.2"
-
-```
-
-# ¿Que es Lubridate?
-
-Cuando trabajamos con series de tiempo en R, muchas veces es complicado que este programa acepte que los datos contengan fecha y hora; Lubridate fue creado por Garrett Grolemund y Hadley Wickham y es un paquete de R que simplifica la labor de trabajar con fechas y horas en R.
-
-```{r}
+## ----------------------------------------------------------------------------
 #Instalar lubridate paquete con el comando:
 install.packages("lubridate", dependencies = T)
 
 # Llamar el paquete a la sesión de trabajo.
 library(lubridate)
-```
 
-Existen diferentes representaciones de fecha y hora, para ver nuestra configuración regional usamos la siguiente función:
 
-```{r}
+## ----------------------------------------------------------------------------
 # Ver la config de la fecha como la zona horaria
 Sys.getlocale("LC_TIME")
-```
-La función `today()` devuelve la fecha de hoy.
 
-```{r}
+
+## ----------------------------------------------------------------------------
 # Devuele la fecha de hoy:
 hoy <- today()
 print(hoy)
-```
 
-# Extraer información a partir de la fecha
 
-Hay tres componentes de fecha que en orden son año, mes y día. Podemos extraer cualquiera de estos componentes utilizando la función `year()`, `month()`, o `day()`, respectivamente. Los probaremos usando la fecha de hoy:
-
-```{r}
+## ----------------------------------------------------------------------------
 # Devuelve el año
 a <- year(hoy)
 print(a)
@@ -60,17 +49,16 @@ mhoy <- rbind(a,m,d)
 cat("Matriz despues de dividir la fecha por año, mes y dia\n")
 print(mhoy)
 write.table(mhoy, file = "FechaActual.txt", row.names = T)
-```
 
-```{r}
+
+## ----------------------------------------------------------------------------
 # Para obtener feccha y hora utlizamos la funcion now():
 ahora <- now()
 cat("Fecha con Hora\n")
 print(ahora)
-```
-Al igual que con las fechas, podemos extraer el año, mes, día o día de la semana. Sin embargo, también podemos usar `hour()`, `minute()` y `second()` para extraer información específica del tiempo.
 
-```{r}
+
+## ----------------------------------------------------------------------------
 # Extraemos la hora de "ahora"
 hr <- hour(ahora)
 
@@ -85,17 +73,9 @@ mahora <- rbind(hr, minu, seg)
 cat("Hora, minutos y segundos de \"Ahora\"\n")
 print(mahora)
 write.table(mahora, file = "HoraActual.txt", row.names = T)
-```
 
-# Podemos volver los caracteres a formato `date`
 
-`Today()` y `now()` proporcionan información de fecha-hora con formato corecto, sin embargo, cuando se trabaja con fechas y horas de una base de datos común y corriente, esto no siempre será así, al contrario, serán raros los caso en los que el formato en bases de datos sea el adecuado.
-
-Afortunadamente, el paquete lubridate ofrece una variedad de funciones para analizar la fecha y hora. Estas funciones toman la forma de `ymd()`,`dmy()`, `hms()`, `ymd_hms()`, etc...
-
-donde cada letra en el nombre de la función representa la ubicación de __años (y)__, __meses (m)__, __días (D)__, __horas (h)__, __minutos (m)__ y / o __segundos (s)__ en la fecha de lectura.
-
-```{r}
+## ----------------------------------------------------------------------------
 # Volveremos la fecha actual a date:
 hoy <- "2021-06-01"
 print(hoy)
@@ -105,25 +85,14 @@ class(hoy)
 hoy <- ymd(hoy)
 print(hoy)
 class(hoy)
-```
-
-# Actualizar fecha y hora
-
-La función `update()` nos permite actualizar uno o más componentes de datos con fecha y hora.
 
 
-```{r}
+## ----------------------------------------------------------------------------
 #escogemos a "ahora" para sumarle 12 h, 15 min y 10 seg:
 ahora <- update(ahora, hours = 12, minutes = 15, seconds = 10)
-```
 
-# Ejercicio:
 
-Ahora haremos ejercicios para trabajar con fechas
-
-la primera base de datos es sobre los nacimientos de bebes, la registraduria agendo citas para cada bebe nacido, así que dio dias del mes proximo para registrar el bebe, pero necesita saber la edad exacta del bebe, asi en este ejercicio la calcularemos
-
-```{r}
+## ----------------------------------------------------------------------------
 # importamos la base de datos:
 nata <- read.csv(file = "natalidad.csv", header = T, sep = ",")
 
@@ -132,10 +101,9 @@ nata <- read.csv(file = "natalidad.csv", header = T, sep = ",")
 nata$nacimiento <- dmy(nata$nacimiento)
 
 nata$registro <- dmy(nata$registro)
-```
 
 
-```{r}
+## ----------------------------------------------------------------------------
 #Creamos una funcion que ingresen las fechas y depsues nos salga el tiempo e vida de cada bebe:
 
 PeriodoDeVida <- function(n, r){
@@ -155,19 +123,17 @@ PeriodoDeVida(nata$nacimiento, nata$registro)
 
 # exportamos el resultado:
 write.table(PeriodoDeVida(nata$nacimiento, nata$registro), file = "PeriodoDeVida.txt", row.names = F)
-```
 
-Haremos otro ejercicio con los datos de flamingo.SA , unas personas sacaron varios productos a diferentes cuotas y flamingo quiere saber la fecha exacta del ultimo pago, gracias a que la base tiene el numero de cuotas semanales que saco el producto haremos el calculo:
 
-```{r}
+## ----------------------------------------------------------------------------
 # Importamos la base de datos:
 mefia <- read.csv(file = "mefia.csv", header = T, sep = ",")
 
 # Convertimos los datos de fecha a date:
 mefia$Fecha <- dmy(mefia$Fecha)
-```
 
-```{r}
+
+## ----------------------------------------------------------------------------
 # Vamos a crear una funcion que nos retorne un texto:
 "La Persona ~X~, sino se atrasa en sus pagos estara terminando la deuda en ~DATE~"
 
@@ -189,4 +155,3 @@ ultimopago(mefia)
 
 # Exportamos el resultado:
 write.table(ultimopago(mefia), file = "CuotaFinal.txt", row.names = F)
-```
